@@ -1,0 +1,10 @@
+{
+  "enabled": true,
+  "probability": 0.001,
+  "intervalMs": 1000,
+  "durationMs": 1800,
+  "volume": 1.0,
+  "debug": false,
+  "imageUrl": "/plugins/dsh-foxy-jumpscare/assets/foxy-jumpscare.webp",
+  "soundUrl": "/plugins/dsh-foxy-jumpscare/assets/foxy-scream.ogg"
+}

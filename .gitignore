@@ -1,0 +1,10 @@
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
+
+# 本地个性化配置(由 gen-config.cjs 从 config.example.json 复制,不入库)
+config.json
+
+# 发布打包产物(scripts/package-release.cjs 生成)
+dist-release/

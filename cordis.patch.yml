@@ -1,0 +1,13 @@
+# dsh-foxy-jumpscare bundle patch.
+#
+# Applied as one layer over the dsh-base / dsh-web-app layers when this package
+# is listed in the profile's `dsh.profile.bundles` (which `dsh plugin add`
+# reconciles automatically from the `dsh.bundle.patch` declaration).
+#
+# A single dual-face row: the node half (lib/index.js) serves the jumpscare
+# assets + config, and the browser half (lib/client.js) — discovered from the
+# package's `dsh.client` metadata — runs the jumpscare timer. Both halves come
+# from the one package name below.
+- insert:
+    - id: foxy-jumpscare
+      name: dsh-foxy-jumpscare

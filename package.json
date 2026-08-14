@@ -1,0 +1,55 @@
+{
+  "name": "dsh-foxy-jumpscare",
+  "version": "1.0.0",
+  "description": "Every second there is a 1-in-1000 chance that Foxy (Withered Foxy) from Five Nights at Freddy's 2 jumpscares you in the DeepSeek Harness web UI: a full-screen scare plus the iconic scream.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/index.js",
+    "lib/client.js",
+    "assets/foxy-jumpscare.webp",
+    "assets/foxy-scream.ogg",
+    "config.example.json",
+    "cordis.patch.yml",
+    "README.md",
+    "NOTICE.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "client": {
+      "platform": "web",
+      "inject": [],
+      "immediately": true
+    },
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "plugin",
+    "bundle",
+    "fnaf",
+    "five-nights-at-freddys",
+    "foxy",
+    "withered-foxy",
+    "jumpscare"
+  ],
+  "author": "01Virex <mr26ishere@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/01Virex/dsh-foxy-jumpscare.git"
+  },
+  "bugs": {
+    "url": "https://github.com/01Virex/dsh-foxy-jumpscare/issues"
+  },
+  "homepage": "https://github.com/01Virex/dsh-foxy-jumpscare#readme"
+}
