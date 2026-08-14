@@ -12,10 +12,10 @@ DeepSeek Harness(dsh)Web 界面:每秒钟有 **1/1000** 的几率,屏幕突然�
 
 - **每秒 1/1000 几率**:每 `intervalMs`(默认 1000ms)掷一次骰子,命中概率 `probability`(默认 0.001);
 - **全屏 jumpscare**:全屏黑底 + Foxy 大头,附带一个「前扑」缩放动画,`durationMs`(默认 1800ms)后自动消失;
-- **尖叫音效**:随 jumpscare 同步播放,音量可调;首次点击/按键会自动「解锁」音频以绕过浏览器自动播放限制;
+- **尖叫音效**:随 jumpscare 同步播放,音量可调;首次点击/按键会自动「解锁」音频以绕过浏览器自动播放限制;画面收起时音效立即停止;
 - **零延迟**:图片与音效启动时预加载,命中瞬间即出,不联网、不转圈;
 - **开箱即用**:node half 自动注册 HTTP 路由 serve 素材与 `config.json`,无需手动部署;
-- **可配置**:概率、间隔、时长、音量、开关、素材地址都能改,还能通过 localStorage 一键关闭;
+- **可配置**:概率、间隔、时长、音量、开关、素材地址都能改;localStorage 覆盖**实时生效**(每秒检测,无需刷新),也能一键关闭;
 - **点击关闭**:jumpscare 期间点一下屏幕即可提前关掉。
 
 ## 安装
@@ -49,9 +49,9 @@ dsh plugin --profile web add github:01Virex/dsh-foxy-jumpscare
 
 配置优先级从高到低:
 
-1. **localStorage** 完整配置:`dsh-foxy-jumpscare.config`(粘贴 JSON,刷新生效);
+1. **localStorage** 完整配置:`dsh-foxy-jumpscare.config`(粘贴 JSON,**实时生效,无需刷新**);
 2. **`config.json`**(项目根,本地个性化,被 `.gitignore` 忽略;缺省时 node half 自动回退到
-   `config.example.json`);
+   `config.example.json`;修改后需刷新页面重新加载);
 3. **内置默认值**(见 `lib/client.js` 顶部 `DEFAULT_CONFIG`)。
 
 配置文件格式(`config.example.json`):
@@ -80,13 +80,12 @@ dsh plugin --profile web add github:01Virex/dsh-foxy-jumpscare
 | `imageUrl` | 见上 | jumpscare 图片地址 |
 | `soundUrl` | 见上 | 尖叫音效地址 |
 
-**应急关闭**:不想再被吓时,在浏览器控制台执行
+**应急关闭**:不想再被吓时,在浏览器控制台执行(1 秒内立即生效,无需刷新):
 
 ```js
 localStorage.setItem("dsh-foxy-jumpscare.config", JSON.stringify({ enabled: false }));
+// 恢复默认:localStorage.removeItem("dsh-foxy-jumpscare.config")
 ```
-
-然后刷新页面即可。
 
 ## 快速触发 / 测试
 
@@ -98,9 +97,9 @@ window.dshFoxyJumpscare.hide()     // 立刻收起
 window.dshFoxyJumpscare.config     // 查看当前生效配置(只读)
 ```
 
-也可以把概率临时拉到 1(每 tick 必中),改 `config.json` 的 `probability` 为 `1`
-或在控制台 `localStorage.setItem("dsh-foxy-jumpscare.config", JSON.stringify({ probability: 1 }))`
-后刷新页面即可。
+也可以把概率临时拉到 1(每 tick 必中)——控制台执行
+`localStorage.setItem("dsh-foxy-jumpscare.config", JSON.stringify({ probability: 1 }))`,
+1 秒内就会连跳;改回/删除该键即可恢复默认(都实时生效,无需刷新)。
 
 > 数学上,默认参数(每秒掷一次、命中率 1/1000)服从几何分布,**期望首次触发时间 ≈ 1000 秒 ≈ 16 分 40 秒**;
 > 其中位数约 11 分 30 秒(50% 概率在此之前触发)。详见「原理」。
