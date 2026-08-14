@@ -88,6 +88,23 @@ localStorage.setItem("dsh-foxy-jumpscare.config", JSON.stringify({ enabled: fals
 
 然后刷新页面即可。
 
+## 快速触发 / 测试
+
+不想等 1/1000 的概率,想立刻看效果?浏览器控制台(F12)执行:
+
+```js
+window.dshFoxyJumpscare.trigger()  // 立刻跳杀一次
+window.dshFoxyJumpscare.hide()     // 立刻收起
+window.dshFoxyJumpscare.config     // 查看当前生效配置(只读)
+```
+
+也可以把概率临时拉到 1(每 tick 必中),改 `config.json` 的 `probability` 为 `1`
+或在控制台 `localStorage.setItem("dsh-foxy-jumpscare.config", JSON.stringify({ probability: 1 }))`
+后刷新页面即可。
+
+> 数学上,默认参数(每秒掷一次、命中率 1/1000)服从几何分布,**期望首次触发时间 ≈ 1000 秒 ≈ 16 分 40 秒**;
+> 其中位数约 11 分 30 秒(50% 概率在此之前触发)。详见「原理」。
+
 ## 项目结构
 
 ```
@@ -121,6 +138,15 @@ dsh-foxy-jumpscare/
 `dsh.bundle.patch` 在配置树里插入一行),又是一个 `dsh.client` 浏览器插件(web 运行时扫描
 `dsh.client` 元数据、serve `/plugins/dsh-foxy-jumpscare/client.js` 并注入 `window.__DSH_BOOT__`)。
 node 半部只负责把素材/配置送出本地 HTTP,惊吓逻辑全在浏览器半部。
+
+### 触发时机(数学期望)
+
+每 `intervalMs`(默认 1000ms)独立掷一次骰子,命中率 `probability`(默认 0.001)。这是**几何分布**:
+
+- **期望首次触发时间** = `intervalMs / probability` = 1000 / 0.001 · 1000ms = **1000 秒 ≈ 16 分 40 秒**;
+- **中位数** ≈ 693 秒 ≈ 11 分 30 秒(即 50% 的概率在此前已触发);
+- 1000 秒内至少触发一次的概率 ≈ 63.2%,1 小时内 ≈ 97.3%,1 分钟内 ≈ 5.8%;
+- **无记忆性**:无论已经安静了多久,接下来每一秒的触发概率仍是 1/1000,剩余期望等待时间仍是 1000 秒——"期望"是长期平均,不保证任何具体时刻。
 
 ## 贡献
 
